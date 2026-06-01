@@ -1,0 +1,20 @@
+Vision and Mission
+
+Which different areas to cover for mission?
+ - what type of company is alphonso
+ - what is its business
+ - what are the tasks in the business
+ - which tasks can benefit from AI
+ - how to reimagine the company business as AI-native engineering
+
+Basic context setting
+Structured .md files for process definitions and process output
+
+Selection of one or more sample tasks from each business activity
+
+ - How this can be improved, re-imagined with AI
+ - What quality and efficiency improvements will it bring?
+ - List of AI tools that are helpful
+ - Selecting more appropriate tools
+ - Specific notes about usage or features of those AI tools related to the task
+ 
