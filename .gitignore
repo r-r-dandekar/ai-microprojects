@@ -64,3 +64,4 @@ Thumbs.db
 # If using vcpkg or Conan for package management, ignore their local setups
 /vcpkg_installed/
 /conan/
+progress-tracker/app/.env

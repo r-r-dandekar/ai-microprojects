@@ -1,0 +1,26 @@
+-- ABC Progress Tracker: Add New User Script
+-- Note: You must first create the user in Supabase Auth (Dashboard -> Authentication -> Users).
+-- Once created, copy the User ID (UUID) and use it in this script.
+
+-- 1. Identify the Department ID
+-- SELECT id, name FROM departments;
+
+-- 2. Insert/Update the Profile
+-- Replace the placeholders below with the actual values.
+
+INSERT INTO public.profiles (id, full_name, role, department_id)
+VALUES (
+  'PASTE_AUTH_USER_ID_HERE', -- UUID from Supabase Auth
+  'User Full Name', 
+  'employee',                -- Options: 'admin', 'manager', 'employee'
+  'PASTE_DEPARTMENT_ID_HERE' -- UUID from departments table
+)
+ON CONFLICT (id) DO UPDATE SET
+  full_name = EXCLUDED.full_name,
+  role = EXCLUDED.role,
+  department_id = EXCLUDED.department_id,
+  updated_at = now();
+
+-- Example for a Manager:
+-- INSERT INTO public.profiles (id, full_name, role, department_id)
+-- VALUES ('auth-id-123', 'John Doe', 'manager', 'dept-id-456');
