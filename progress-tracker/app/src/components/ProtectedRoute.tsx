@@ -1,35 +1,18 @@
-import React from 'react';
-import { Navigate, Outlet } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
-import { Spinner, Container } from 'react-bootstrap';
+import { Navigate, Outlet } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
-interface ProtectedRouteProps {
-  role?: 'admin' | 'manager' | 'employee';
+interface Props {
+  managerOnly?: boolean
 }
 
-const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ role }) => {
-  const { user, profile, loading } = useAuth();
+export default function ProtectedRoute({ managerOnly = false }: Props) {
+  const { currentUser, loading } = useAuth()
 
-  if (loading) {
-    return (
-      <Container className="d-flex justify-content-center align-items-center vh-100">
-        <div className="text-center">
-          <Spinner animation="border" variant="primary" className="mb-2" />
-          <div>Loading...</div>
-        </div>
-      </Container>
-    );
-  }
+  if (loading) return null
 
-  if (!user) {
-    return <Navigate to="/login" replace />;
-  }
+  if (!currentUser) return <Navigate to="/login" replace />
 
-  if (role && profile?.role !== role && profile?.role !== 'admin') {
-    return <Navigate to="/" replace />;
-  }
+  if (managerOnly && currentUser.role !== 'manager') return <Navigate to="/" replace />
 
-  return <Outlet />;
-};
-
-export default ProtectedRoute;
+  return <Outlet />
+}

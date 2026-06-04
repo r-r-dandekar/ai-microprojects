@@ -1,47 +1,114 @@
-# Setup Instructions
+# Setup & Installation
 
-These commands will initialize the ABC Ltd. Progress Tracker project environment.
+## Prerequisites
+- Node.js 18+
+- A Supabase project with the schema applied (see Step 1)
 
-## 1. Project Initialization
-Create the React application with Vite and TypeScript:
-```powershell
-npm create vite@latest app -- --template react-ts
+---
+
+## Step 1 — Apply the Database Schema
+
+1. Open your Supabase project dashboard
+2. Go to **SQL Editor**
+3. Paste and run the contents of `app/migration.sql`
+
+This creates three tables (`departments`, `users`, `tasks`) with all constraints and indexes.
+
+---
+
+## Step 2 — Configure Environment Variables
+
+The `.env` file is pre-populated at `app/.env`. If you need to change the Supabase project, update these two values:
+
+```
+VITE_SUPABASE_URL=https://<your-project-ref>.supabase.co
+VITE_SUPABASE_ANON_KEY=<your-anon-key>
 ```
 
-## 2. Install Dependencies
-Navigate into the app directory and install the core libraries:
-```powershell
+---
+
+## Step 3 — Install Dependencies
+
+```bash
 cd app
 npm install
-npm install bootstrap react-bootstrap @supabase/supabase-js react-router-dom
 ```
 
-## 3. Install Development Dependencies
-Install Vitest and testing utilities:
-```powershell
-npm install -D vitest @testing-library/react @testing-library/jest-dom jsdom @vitejs/plugin-react
-```
+---
 
-## 4. Supabase Setup (Manual Step)
-1. Create a new project on [Supabase](https://supabase.com/).
-2. Define the schema based on the PRD (Departments, Users, Tasks).
-3. Enable Row-Level Security (RLS) for departmental silos.
-4. Obtain the `SUPABASE_URL` and `SUPABASE_ANON_KEY`.
+## Step 4 — Run the Development Server
 
-## 5. Environment Configuration
-Create a `.env` file in the `app` root:
-```env
-VITE_SUPABASE_URL=your_supabase_url
-VITE_SUPABASE_ANON_KEY=your_supabase_anon_key
-```
-
-## 6. Build & Run
-To start the development server:
-```powershell
+```bash
 npm run dev
 ```
 
-To run tests:
-```powershell
+The app will be available at `http://localhost:5173`.
+
+---
+
+## Step 5 — Run Tests
+
+```bash
+# Watch mode (re-runs on file changes)
 npm test
+
+# Single run
+npm run test:run
+```
+
+---
+
+## Step 6 — Build for Production
+
+```bash
+npm run build
+```
+
+Output is in `app/dist/`. Deploy this folder to Netlify or Vercel.
+
+### Netlify
+- Build command: `npm run build`
+- Publish directory: `dist`
+- Add `VITE_SUPABASE_URL` and `VITE_SUPABASE_ANON_KEY` as environment variables in the Netlify dashboard
+
+### Vercel
+- Framework preset: Vite
+- Build command: `npm run build`
+- Output directory: `dist`
+- Add env vars in Project Settings → Environment Variables
+
+---
+
+## Project Structure
+
+```
+app/
+├── .env                         # Supabase credentials (gitignored)
+├── migration.sql                # Run once in Supabase SQL Editor
+├── src/
+│   ├── modules/
+│   │   ├── auth.ts              # Login, signup, session management
+│   │   ├── departments.ts       # List and create departments
+│   │   ├── tasks.ts             # Full task CRUD with permission checks
+│   │   └── users.ts             # List employees by department
+│   ├── contexts/
+│   │   └── AuthContext.tsx      # Global auth state
+│   ├── components/
+│   │   ├── Layout.tsx           # Navbar + sidebar shell
+│   │   ├── ProtectedRoute.tsx   # Auth guard for routes
+│   │   ├── TaskModal.tsx        # Create / edit task modal
+│   │   └── StatusModal.tsx      # Employee status update modal
+│   ├── pages/
+│   │   ├── Login.tsx
+│   │   ├── Signup.tsx
+│   │   ├── Dashboard.tsx
+│   │   ├── Tasks.tsx
+│   │   └── Departments.tsx
+│   └── test/
+│       ├── auth.test.ts
+│       ├── departments.test.ts
+│       ├── tasks.test.ts
+│       ├── AuthContext.test.tsx
+│       ├── Dashboard.test.tsx
+│       └── Tasks.test.tsx
 ```

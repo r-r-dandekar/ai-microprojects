@@ -12,6 +12,10 @@ All project documentation, notes, and reference materials will be saved as files
 ## Project Objective
 **Goal:** To make a progress tracker for ABC Ltd.
 
+## Downloading Packagers
+ - Don't download any fishy or sketchy packages, for security reasons.
+ - NEVER install any packages that are less than 14 days old.
+
 ## Other Instructions
 Don't start coding or running commands until I tell you to.
 

@@ -1,53 +1,45 @@
-import React from 'react';
-import { Container, Nav, Navbar, NavDropdown, Row, Col } from 'react-bootstrap';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { Link, useLocation } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
-const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const { profile, signOut } = useAuth();
-  const navigate = useNavigate();
-  const location = useLocation();
+export default function Layout({ children }: { children: React.ReactNode }) {
+  const { currentUser, isManager, logout } = useAuth()
+  const location = useLocation()
 
-  const handleSignOut = async () => {
-    await signOut();
-    navigate('/login');
-  };
+  const navLinks = [
+    { to: '/', label: 'Dashboard' },
+    { to: '/tasks', label: 'Tasks' },
+    ...(isManager ? [{ to: '/departments', label: 'Departments' }] : []),
+  ]
 
   return (
-    <div className="d-flex flex-column min-vh-100">
-      <Navbar bg="dark" variant="dark" expand="lg" className="px-3">
-        <Navbar.Brand as={Link} to="/">ABC Progress Tracker</Navbar.Brand>
-        <Navbar.Toggle aria-controls="basic-navbar-nav" />
-        <Navbar.Collapse id="basic-navbar-nav" className="justify-content-end">
-          <Nav>
-            <NavDropdown title={profile?.full_name || 'User'} id="basic-nav-dropdown">
-              <NavDropdown.Item onClick={handleSignOut}>Sign Out</NavDropdown.Item>
-            </NavDropdown>
-          </Nav>
-        </Navbar.Collapse>
-      </Navbar>
+    <div className="d-flex flex-column" style={{ minHeight: '100vh' }}>
+      <nav className="navbar navbar-dark bg-primary px-4">
+        <span className="navbar-brand fw-bold">ABC Progress Tracker</span>
+        <div className="d-flex align-items-center gap-3">
+          <span className="text-white small">Hello, {currentUser?.username}</span>
+          <button className="btn btn-outline-light btn-sm" onClick={logout}>Logout</button>
+        </div>
+      </nav>
 
-      <Container fluid className="flex-grow-1">
-        <Row className="h-100">
-          <Col md={2} className="bg-light border-end py-3 d-none d-md-block min-vh-100">
-            <Nav variant="pills" className="flex-column" activeKey={location.pathname}>
-              <Nav.Item>
-                <Nav.Link as={Link} to="/" eventKey="/">Tasks</Nav.Link>
-              </Nav.Item>
-              {profile?.role === 'admin' && (
-                <Nav.Item>
-                  <Nav.Link as={Link} to="/admin" eventKey="/admin">Admin Panel</Nav.Link>
-                </Nav.Item>
-              )}
-            </Nav>
-          </Col>
-          <Col md={10} className="py-4 px-4">
-            {children}
-          </Col>
-        </Row>
-      </Container>
+      <div className="d-flex flex-grow-1">
+        <div className="bg-light border-end" style={{ width: '220px', minHeight: 'calc(100vh - 56px)' }}>
+          <nav className="nav flex-column p-3 gap-1">
+            {navLinks.map(link => (
+              <Link
+                key={link.to}
+                to={link.to}
+                className={`nav-link px-3 py-2 rounded ${
+                  location.pathname === link.to ? 'bg-primary text-white active' : 'text-dark'
+                }`}
+              >
+                {link.label}
+              </Link>
+            ))}
+          </nav>
+        </div>
+
+        <main className="flex-grow-1 p-4">{children}</main>
+      </div>
     </div>
-  );
-};
-
-export default Layout;
+  )
+}

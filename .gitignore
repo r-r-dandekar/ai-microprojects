@@ -1,3 +1,35 @@
+### From progress-tracker
+# Dependencies
+node_modules/
+app/node_modules/
+
+# Build output
+app/dist/
+
+# Environment variables (contain secrets)
+app/.env
+app/.env.local
+app/.env.*.local
+
+# Logs
+*.log
+npm-debug.log*
+
+# Editor
+.vscode/
+.idea/
+*.suo
+*.user
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Vitest cache
+app/.vitest/
+
+
+
 # ==========================================
 # 1. C++ Compiled Binaries & Build Artifacts
 # ==========================================

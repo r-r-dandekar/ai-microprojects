@@ -1,70 +1,66 @@
-import React, { useState } from 'react';
-import { Container, Form, Button, Card, Alert } from 'react-bootstrap';
-import { useNavigate } from 'react-router-dom';
-import { supabase } from '../lib/supabase';
+import { useState } from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
 
-const Login: React.FC = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [loading, setLoading] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const navigate = useNavigate();
+export default function Login() {
+  const { login } = useAuth()
+  const navigate = useNavigate()
+  const [identifier, setIdentifier] = useState('')
+  const [password, setPassword] = useState('')
+  const [error, setError] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
 
-  const handleLogin = async (e: React.FormEvent) => {
-    e.preventDefault();
-    setLoading(true);
-    setError(null);
-
-    const { error } = await supabase.auth.signInWithPassword({
-      email,
-      password,
-    });
-
-    if (error) {
-      setError(error.message);
-      setLoading(false);
-    } else {
-      navigate('/');
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault()
+    setError(null)
+    setLoading(true)
+    try {
+      await login(identifier, password)
+      navigate('/')
+    } catch (err: unknown) {
+      setError(err instanceof Error ? err.message : 'Login failed')
+    } finally {
+      setLoading(false)
     }
-  };
+  }
 
   return (
-    <Container className="d-flex align-items-center justify-content-center vh-100">
-      <Card style={{ width: '400px' }}>
-        <Card.Body className="p-4">
-          <h2 className="text-center mb-4">ABC Login</h2>
-          {error && <Alert variant="danger">{error}</Alert>}
-          <Form onSubmit={handleLogin}>
-            <Form.Group className="mb-3" controlId="formBasicEmail">
-              <Form.Label>Email address</Form.Label>
-              <Form.Control
-                type="email"
-                placeholder="Enter email"
-                value={email}
-                onChange={(e) => setEmail(e.target.value)}
+    <div className="min-vh-100 d-flex align-items-center justify-content-center bg-light">
+      <div className="card shadow" style={{ width: '400px' }}>
+        <div className="card-body p-4">
+          <h4 className="card-title text-center mb-1">ABC Progress Tracker</h4>
+          <p className="text-center text-muted mb-4 small">Sign in to your account</p>
+          {error && <div className="alert alert-danger py-2">{error}</div>}
+          <form onSubmit={handleSubmit}>
+            <div className="mb-3">
+              <label className="form-label">Email or Username</label>
+              <input
+                className="form-control"
+                value={identifier}
+                onChange={e => setIdentifier(e.target.value)}
                 required
+                autoFocus
               />
-            </Form.Group>
-
-            <Form.Group className="mb-4" controlId="formBasicPassword">
-              <Form.Label>Password</Form.Label>
-              <Form.Control
+            </div>
+            <div className="mb-4">
+              <label className="form-label">Password</label>
+              <input
                 type="password"
-                placeholder="Password"
+                className="form-control"
                 value={password}
-                onChange={(e) => setPassword(e.target.value)}
+                onChange={e => setPassword(e.target.value)}
                 required
               />
-            </Form.Group>
-
-            <Button variant="primary" type="submit" className="w-100" disabled={loading}>
-              {loading ? 'Logging in...' : 'Login'}
-            </Button>
-          </Form>
-        </Card.Body>
-      </Card>
-    </Container>
-  );
-};
-
-export default Login;
+            </div>
+            <button type="submit" className="btn btn-primary w-100" disabled={loading}>
+              {loading ? 'Signing in…' : 'Log In'}
+            </button>
+          </form>
+          <p className="text-center mt-3 mb-0 small">
+            Don't have an account? <Link to="/signup">Sign up</Link>
+          </p>
+        </div>
+      </div>
+    </div>
+  )
+}

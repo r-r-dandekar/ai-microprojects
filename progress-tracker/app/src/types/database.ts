@@ -1,96 +1,34 @@
-export type Json =
-  | string
-  | number
-  | boolean
-  | null
-  | { [key: string]: Json | undefined }
-  | Json[]
+export type TaskStatus = 'pending' | 'in_progress' | 'under_review' | 'completed' | 'blocked'
+export type TaskPriority = 'low' | 'medium' | 'high'
+export type UserRole = 'manager' | 'employee'
 
-export interface Database {
-  public: {
-    Tables: {
-      departments: {
-        Row: {
-          id: string
-          created_at: string
-          name: string
-        }
-        Insert: {
-          id?: string
-          created_at?: string
-          name: string
-        }
-        Update: {
-          id?: string
-          created_at?: string
-          name?: string
-        }
-      }
-      profiles: {
-        Row: {
-          id: string
-          updated_at: string | null
-          username: string | null
-          full_name: string | null
-          role: 'admin' | 'manager' | 'employee'
-          department_id: string | null
-        }
-        Insert: {
-          id: string
-          updated_at?: string | null
-          username?: string | null
-          full_name?: string | null
-          role?: 'admin' | 'manager' | 'employee'
-          department_id?: string | null
-        }
-        Update: {
-          id?: string
-          updated_at?: string | null
-          username?: string | null
-          full_name?: string | null
-          role?: 'admin' | 'manager' | 'employee'
-          department_id?: string | null
-        }
-      }
-      tasks: {
-        Row: {
-          id: string
-          created_at: string
-          title: string
-          description: string | null
-          status: 'pending' | 'in_progress' | 'completed'
-          priority: 'low' | 'medium' | 'high'
-          due_date: string | null
-          owner_id: string | null
-          department_id: string
-        }
-        Insert: {
-          id?: string
-          created_at?: string
-          title: string
-          description?: string | null
-          status?: 'pending' | 'in_progress' | 'completed'
-          priority?: 'low' | 'medium' | 'high'
-          due_date?: string | null
-          owner_id?: string | null
-          department_id: string
-        }
-        Update: {
-          id?: string
-          created_at?: string
-          title?: string
-          description?: string | null
-          status?: 'pending' | 'in_progress' | 'completed'
-          priority?: 'low' | 'medium' | 'high'
-          due_date?: string | null
-          owner_id?: string | null
-          department_id?: string
-        }
-      }
-    }
-  }
+export interface Department {
+  id: string
+  name: string
+  created_at: string
 }
 
-export type Department = Database['public']['Tables']['departments']['Row']
-export type Profile = Database['public']['Tables']['profiles']['Row']
-export type Task = Database['public']['Tables']['tasks']['Row']
+export interface User {
+  id: string
+  email: string
+  username: string
+  role: UserRole
+  department_id: string | null
+  created_at: string
+}
+
+export interface Task {
+  id: string
+  title: string
+  description: string | null
+  status: TaskStatus
+  status_note: string | null
+  priority: TaskPriority
+  due_date: string | null
+  assignee_id: string | null
+  created_by: string
+  department_id: string
+  created_at: string
+  assignee?: { id: string; username: string } | null
+  department?: { id: string; name: string } | null
+}

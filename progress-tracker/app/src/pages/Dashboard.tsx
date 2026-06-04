@@ -1,217 +1,144 @@
-import React, { useEffect, useState } from 'react';
-import { Button, Table, Badge, Spinner, Alert, Form, Stack, Card } from 'react-bootstrap';
-import { supabase } from '../lib/supabase';
-import type { Task, Profile } from '../types/database';
-import { useAuth } from '../contexts/AuthContext';
-import TaskModal from '../components/TaskModal';
+import { useState, useEffect } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { useAuth } from '../contexts/AuthContext'
+import { listTasks } from '../modules/tasks'
+import type { Task, TaskStatus } from '../types/database'
 
-const Dashboard: React.FC = () => {
-  const { profile } = useAuth();
-  const [tasks, setTasks] = useState<Task[]>([]);
-  const [teamMembers, setTeamMembers] = useState<Profile[]>([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
-  const [showModal, setShowModal] = useState(false);
-  const [editingTask, setEditingTask] = useState<Task | undefined>(undefined);
-  const [filterStatus, setFilterStatus] = useState<string>('all');
+const STATUS_CONFIG: { key: TaskStatus; label: string; color: string }[] = [
+  { key: 'pending', label: 'Pending', color: 'secondary' },
+  { key: 'in_progress', label: 'In Progress', color: 'warning' },
+  { key: 'under_review', label: 'Under Review', color: 'info' },
+  { key: 'completed', label: 'Completed', color: 'success' },
+  { key: 'blocked', label: 'Blocked', color: 'danger' },
+]
+
+export default function Dashboard() {
+  const { currentUser, isManager } = useAuth()
+  const navigate = useNavigate()
+  const [tasks, setTasks] = useState<Task[]>([])
+  const [loading, setLoading] = useState(true)
+  const [error, setError] = useState<string | null>(null)
 
   useEffect(() => {
-    if (profile?.department_id) {
-      fetchTasks();
-      fetchTeamMembers();
-    }
-  }, [profile]);
+    if (!currentUser) return
+    listTasks(currentUser)
+      .then(setTasks)
+      .catch((e: Error) => setError(e.message))
+      .finally(() => setLoading(false))
+  }, [currentUser])
 
-  const fetchTasks = async () => {
-    setLoading(true);
-    try {
-      const { data, error } = await supabase
-        .from('tasks')
-        .select('*')
-        .eq('department_id', profile?.department_id)
-        .order('created_at', { ascending: false });
+  const today = new Date().toISOString().split('T')[0]
 
-      if (error) throw error;
-      setTasks(data || []);
-    } catch (err: any) {
-      setError(err.message);
-    } finally {
-      setLoading(false);
-    }
-  };
+  const counts = STATUS_CONFIG.reduce(
+    (acc, s) => ({ ...acc, [s.key]: tasks.filter(t => t.status === s.key).length }),
+    {} as Record<TaskStatus, number>,
+  )
 
-  const fetchTeamMembers = async () => {
-    try {
-      const { data, error } = await supabase
-        .from('profiles')
-        .select('*')
-        .eq('department_id', profile?.department_id);
+  const overdue = tasks.filter(
+    t => t.due_date && t.due_date < today && t.status !== 'completed',
+  )
 
-      if (error) throw error;
-      setTeamMembers(data || []);
-    } catch (err: any) {
-      console.error('Error fetching team members:', err);
-    }
-  };
+  const deptMap = new Map<string, { name: string; counts: Record<TaskStatus, number> }>()
+  if (isManager) {
+    tasks.forEach(t => {
+      const deptId = t.department_id
+      const deptName = (t.department as { name: string } | null)?.name ?? deptId
+      if (!deptMap.has(deptId)) {
+        deptMap.set(deptId, {
+          name: deptName,
+          counts: { pending: 0, in_progress: 0, under_review: 0, completed: 0, blocked: 0 },
+        })
+      }
+      deptMap.get(deptId)!.counts[t.status]++
+    })
+  }
 
-  const handleCreateTask = () => {
-    setEditingTask(undefined);
-    setShowModal(true);
-  };
-
-  const handleEditTask = (task: Task) => {
-    if (profile?.role === 'manager' || profile?.role === 'admin') {
-      setEditingTask(task);
-      setShowModal(true);
-    }
-  };
-
-  const handleStatusChange = async (task: Task, newStatus: Task['status']) => {
-    // Only owner or manager/admin can change status
-    if (task.owner_id !== profile?.id && profile?.role === 'employee') return;
-
-    try {
-      const { error } = await supabase
-        .from('tasks')
-        .update({ status: newStatus })
-        .eq('id', task.id);
-
-      if (error) throw error;
-      fetchTasks();
-    } catch (err: any) {
-      alert(err.message);
-    }
-  };
-
-  const filteredTasks = tasks.filter(task => 
-    filterStatus === 'all' ? true : task.status === filterStatus
-  );
-
-  const getPriorityBadge = (priority: string) => {
-    switch (priority) {
-      case 'high': return <Badge bg="danger">High</Badge>;
-      case 'medium': return <Badge bg="warning" text="dark">Medium</Badge>;
-      case 'low': return <Badge bg="info">Low</Badge>;
-      default: return <Badge bg="secondary">{priority}</Badge>;
-    }
-  };
-
-  const getStatusBadge = (status: string) => {
-    switch (status) {
-      case 'completed': return <Badge bg="success">Completed</Badge>;
-      case 'in_progress': return <Badge bg="primary">In Progress</Badge>;
-      case 'pending': return <Badge bg="secondary">Pending</Badge>;
-      default: return <Badge bg="secondary">{status}</Badge>;
-    }
-  };
-
-  if (loading && tasks.length === 0) {
+  if (loading) {
     return (
-      <div className="text-center mt-5">
-        <Spinner animation="border" />
+      <div className="text-center py-5">
+        <div className="spinner-border text-primary" role="status" />
       </div>
-    );
+    )
   }
 
   return (
     <div>
-      <Stack direction="horizontal" gap={3} className="mb-4">
-        <h2>Department Tasks</h2>
-        <div className="ms-auto">
-          {(profile?.role === 'manager' || profile?.role === 'admin') && (
-            <Button variant="primary" onClick={handleCreateTask}>
-              + Create Task
-            </Button>
-          )}
-        </div>
-      </Stack>
+      <h2 className="mb-1">Dashboard</h2>
+      <p className="text-muted mb-4">
+        Welcome back, <strong>{currentUser?.username}</strong>.
+      </p>
 
-      {error && <Alert variant="danger">{error}</Alert>}
+      {error && <div className="alert alert-danger">{error}</div>}
 
-      <Card className="mb-4">
-        <Card.Body>
-          <Form.Group controlId="filterStatus" style={{ maxWidth: '200px' }}>
-            <Form.Label>Filter by Status</Form.Label>
-            <Form.Select 
-              value={filterStatus} 
-              onChange={(e) => setFilterStatus(e.target.value)}
+      <div className="row g-3 mb-4" data-testid="status-cards">
+        {STATUS_CONFIG.map(s => (
+          <div key={s.key} className="col-sm-6 col-md-4 col-lg">
+            <div
+              className={`card border-top border-4 border-${s.color} h-100`}
+              style={{ cursor: 'pointer' }}
+              onClick={() => navigate(`/tasks?status=${s.key}`)}
+              data-testid={`status-card-${s.key}`}
             >
-              <option value="all">All Statuses</option>
-              <option value="pending">Pending</option>
-              <option value="in_progress">In Progress</option>
-              <option value="completed">Completed</option>
-            </Form.Select>
-          </Form.Group>
-        </Card.Body>
-      </Card>
+              <div className="card-body text-center py-4">
+                <div className="fs-1 fw-bold" data-testid={`count-${s.key}`}>{counts[s.key]}</div>
+                <div className="text-muted small">{s.label}</div>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
 
-      <Table responsive striped hover>
-        <thead>
-          <tr>
-            <th>Title</th>
-            <th>Owner</th>
-            <th>Status</th>
-            <th>Priority</th>
-            <th>Due Date</th>
-            <th>Actions</th>
-          </tr>
-        </thead>
-        <tbody>
-          {filteredTasks.length === 0 ? (
-            <tr>
-              <td colSpan={6} className="text-center py-4 text-muted">
-                No tasks found.
-              </td>
-            </tr>
-          ) : (
-            filteredTasks.map((task) => (
-              <tr key={task.id} style={{ cursor: (profile?.role !== 'employee' || task.owner_id === profile.id) ? 'pointer' : 'default' }}>
-                <td onClick={() => handleEditTask(task)}>{task.title}</td>
-                <td onClick={() => handleEditTask(task)}>
-                  {teamMembers.find(m => m.id === task.owner_id)?.full_name || 'Unassigned'}
-                </td>
-                <td>
-                  <Form.Select 
-                    size="sm" 
-                    value={task.status}
-                    disabled={task.owner_id !== profile?.id && profile?.role === 'employee'}
-                    onChange={(e) => handleStatusChange(task, e.target.value as Task['status'])}
-                    style={{ width: 'auto', display: 'inline-block' }}
-                    className="me-2"
-                  >
-                    <option value="pending">Pending</option>
-                    <option value="in_progress">In Progress</option>
-                    <option value="completed">Completed</option>
-                  </Form.Select>
-                  {getStatusBadge(task.status)}
-                </td>
-                <td onClick={() => handleEditTask(task)}>{getPriorityBadge(task.priority)}</td>
-                <td onClick={() => handleEditTask(task)}>
-                  {task.due_date ? new Date(task.due_date).toLocaleDateString() : '-'}
-                </td>
-                <td>
-                  {(profile?.role === 'manager' || profile?.role === 'admin') && (
-                    <Button variant="outline-primary" size="sm" onClick={() => handleEditTask(task)}>
-                      Edit
-                    </Button>
-                  )}
-                </td>
+      <h5 className="mb-3">Overdue Tasks</h5>
+      {overdue.length === 0 ? (
+        <p className="text-muted" data-testid="no-overdue">No overdue tasks.</p>
+      ) : (
+        <div className="table-responsive mb-4">
+          <table className="table table-bordered table-sm" data-testid="overdue-table">
+            <thead className="table-light">
+              <tr>
+                <th>Task</th>
+                {isManager && <th>Department</th>}
+                <th>Assignee</th>
+                <th>Due Date</th>
               </tr>
-            ))
-          )}
-        </tbody>
-      </Table>
+            </thead>
+            <tbody>
+              {overdue.map(t => (
+                <tr key={t.id}>
+                  <td>{t.title}</td>
+                  {isManager && <td>{(t.department as { name: string } | null)?.name ?? '—'}</td>}
+                  <td>{(t.assignee as { username: string } | null)?.username ?? '—'}</td>
+                  <td className="text-danger fw-medium">{t.due_date}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
 
-      <TaskModal
-        show={showModal}
-        handleClose={() => setShowModal(false)}
-        task={editingTask}
-        teamMembers={teamMembers}
-        departmentId={profile?.department_id || ''}
-        onSuccess={fetchTasks}
-      />
+      {isManager && deptMap.size > 0 && (
+        <>
+          <h5 className="mb-3">Department Breakdown</h5>
+          <div className="table-responsive" data-testid="dept-breakdown">
+            <table className="table table-bordered">
+              <thead className="table-light">
+                <tr>
+                  <th>Department</th>
+                  {STATUS_CONFIG.map(s => <th key={s.key}>{s.label}</th>)}
+                </tr>
+              </thead>
+              <tbody>
+                {[...deptMap.values()].map(d => (
+                  <tr key={d.name}>
+                    <td className="fw-medium">{d.name}</td>
+                    {STATUS_CONFIG.map(s => <td key={s.key}>{d.counts[s.key]}</td>)}
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </>
+      )}
     </div>
-  );
-};
-
-export default Dashboard;
+  )
+}
