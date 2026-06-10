@@ -1,0 +1,10 @@
+^C:\USERS\RVDAN\DOCUMENTS\AI-MICROPROJECTS\VST-EXP-1\BUILD\CMAKEFILES\68440C9F97E2918CD50D2F414F7ED02D\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/rvdan/Documents/ai-microprojects/vst-exp-1 -BC:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/RD-Processor-Mk-01.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

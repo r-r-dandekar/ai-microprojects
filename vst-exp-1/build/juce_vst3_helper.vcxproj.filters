@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-src\modules\juce_audio_plugin_client\VST3\juce_VST3ManifestHelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{840F9275-0368-3AD1-B0BF-B39D5CF7216F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

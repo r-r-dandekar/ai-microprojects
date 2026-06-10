@@ -1,0 +1,20 @@
+^C:\USERS\RVDAN\DOCUMENTS\AI-MICROPROJECTS\VST-EXP-1\BUILD\CMAKEFILES\19BE7E5C6535387B1CDD37417441DC69\RD-PROCESSOR-MK-01_RESOURCES.RC.RULE
+setlocal
+_deps\juce-build\tools\extras\Build\juceaide\juceaide_artefacts\Debug\juceaide.exe rcfile C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/RD-Processor-Mk-01_artefacts/JuceLibraryCode/Info.txt C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/RD-Processor-Mk-01_artefacts/JuceLibraryCode/RD-Processor-Mk-01_resources.rc
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd
+^C:\USERS\RVDAN\DOCUMENTS\AI-MICROPROJECTS\VST-EXP-1\CMAKELISTS.TXT
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/rvdan/Documents/ai-microprojects/vst-exp-1 -BC:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build --check-stamp-file C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

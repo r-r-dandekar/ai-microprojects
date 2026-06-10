@@ -1,139 +1,110 @@
 #pragma once
 #include <juce_gui_basics/juce_gui_basics.h>
+#include <juce_gui_extra/juce_gui_extra.h>
 #include "PluginProcessor.h"
-#include "DSP/DistortionBlock.h"
 
-class BlockComponent;
-
+// ============================================================
+// InspectorSidebar
+// Displays parameter controls for the currently selected block.
+// ============================================================
 class InspectorSidebar : public juce::Component
 {
 public:
-    InspectorSidebar() {
-        addAndMakeVisible(driveSlider);
-        driveSlider.setRange(0.0, 10.0);
-        driveSlider.setVisible(false);
-    }
-    void paint(juce::Graphics& g) override { g.fillAll(juce::Colours::grey); }
-    void resized() override { driveSlider.setBounds(10, 50, 180, 30); }
-    void setBlock(BlockComponent* block) { driveSlider.setVisible(block != nullptr); }
-private:
-    juce::Slider driveSlider;
-};
+    explicit InspectorSidebar (RDProcessorMk01AudioProcessor& p);
+    void paint   (juce::Graphics& g) override;
+    void resized ()                  override;
 
-class BlockComponent : public juce::Component
-{
-public:
-    BlockComponent(juce::String name, std::function<void(BlockComponent*)> onSelect) : blockName(name), onSelected(onSelect) { setSize(80, 40); }
-    void paint(juce::Graphics& g) override {
-        g.fillAll(isSelected ? juce::Colours::red : juce::Colours::blue);
-        g.setColour(juce::Colours::white);
-        g.drawText(blockName, getLocalBounds(), juce::Justification::centred);
-    }
-    void mouseDown(const juce::MouseEvent& e) override {
-        isSelected = true;
-        onSelected(this);
-        repaint();
-        dragStartPosition = getPosition();
-        toFront(true);
-    }
-    void deselect() { isSelected = false; repaint(); }
-    void mouseDrag(const juce::MouseEvent& e) override {
-        auto delta = e.getOffsetFromDragStart();
-        setTopLeftPosition(dragStartPosition + delta);
-        if (auto* canvas = getParentComponent()) canvas->repaint();
-    }
-private:
-    juce::String blockName;
-    juce::Point<int> dragStartPosition;
-    bool isSelected = false;
-    std::function<void(BlockComponent*)> onSelected;
-};
+    void showBlock (juce::Uuid blockId);
 
-class MainCanvasComponent : public juce::Component, public juce::DragAndDropTarget
-{
-public:
-    MainCanvasComponent(RDProcessorMk01AudioProcessor& p, std::function<void(BlockComponent*)> onBlockSelect) 
-        : processor(p), onSelect(onBlockSelect) { setOpaque(true); }
-    void paint(juce::Graphics& g) override {
-        g.fillAll(juce::Colours::darkgrey);
-        g.setColour(juce::Colours::white);
-        for(size_t i = 1; i < blocks.size(); ++i) {
-            auto b1 = blocks[i-1]->getBounds();
-            auto b2 = blocks[i]->getBounds();
-            auto p1 = juce::Point<float>(b1.getRight(), b1.getCentreY());
-            auto p2 = juce::Point<float>(b2.getX(), b2.getCentreY());
-            juce::Path path;
-            path.startNewSubPath(p1);
-            path.lineTo(p2);
-            g.strokePath(path, juce::PathStrokeType(3.0f));
-            juce::Path head;
-            head.addTriangle(p2.x, p2.y, p2.x - 10.0f, p2.y - 5.0f, p2.x - 10.0f, p2.y + 5.0f);
-            g.fillPath(head);
-        }
-    }
-    bool isInterestedInDragSource(const SourceDetails&) override { return true; }
-    void itemDropped(const SourceDetails& details) override {
-        if (details.description == "Distortion") {
-            processor.getAudioGraph().addBlock(std::make_unique<DistortionBlock>());
-            auto newBlock = std::make_unique<BlockComponent>("Distortion", [this](BlockComponent* b) {
-                for(auto& blk : blocks) if(blk.get() != b) blk->deselect();
-                onSelect(b);
-            });
-            newBlock->setTopLeftPosition(details.localPosition.toInt());
-            addAndMakeVisible(newBlock.get());
-            blocks.push_back(std::move(newBlock));
-            resized();
-        }
-    }
 private:
     RDProcessorMk01AudioProcessor& processor;
-    std::vector<std::unique_ptr<BlockComponent>> blocks;
-    std::function<void(BlockComponent*)> onSelect;
-};
+    juce::Uuid currentBlockId;
+    std::unique_ptr<juce::FileChooser> fileChooserOwner;
 
-class DraggableButton : public juce::TextButton
-{
-public:
-    DraggableButton(const juce::String& name) : juce::TextButton(name) {}
-    void mouseDown(const juce::MouseEvent& e) override {
-        auto* container = juce::DragAndDropContainer::findParentDragContainerFor(this);
-        container->startDragging(getButtonText(), this, juce::Image(juce::Image::PixelFormat::ARGB, 80, 30, true));
-    }
-};
-
-class BlockPalette : public juce::Component
-{
-public:
-    BlockPalette() : addButton("Distortion") { addAndMakeVisible(addButton); }
-    void paint(juce::Graphics& g) override { g.fillAll(juce::Colours::lightgrey); }
-    void resized() override { addButton.setBounds(10, 10, 80, 30); }
-private:
-    DraggableButton addButton;
-};
-
-class RDProcessorMk01AudioProcessorEditor : public juce::AudioProcessorEditor, public juce::DragAndDropContainer
-{
-public:
-    RDProcessorMk01AudioProcessorEditor (RDProcessorMk01AudioProcessor& p)
-        : AudioProcessorEditor (&p), audioProcessor (p), 
-          mainCanvas(p, [this](BlockComponent* b) { sidebar.setBlock(b); })
+    struct ParamRow
     {
-        addAndMakeVisible(mainCanvas);
-        addAndMakeVisible(sidebar);
-        addAndMakeVisible(palette);
-        setSize(1000, 700);
-    }
-    void resized() override {
-        auto area = getLocalBounds();
-        palette.setBounds(area.removeFromTop(50));
-        sidebar.setBounds(area.removeFromLeft(200));
-        mainCanvas.setBounds(area);
-    }
-    void paint (juce::Graphics& g) override { g.fillAll(getLookAndFeel().findColour(juce::ResizableWindow::backgroundColourId)); }
+        std::unique_ptr<juce::Label>     label;
+        std::unique_ptr<juce::Component> control;  // Slider or ComboBox or TextButton
+    };
+    std::vector<ParamRow> rows;
+
+    void clearRows();
+    void addSliderRow (const juce::String& name, double min, double max, double value,
+                       std::function<void (double)> onChange, double interval = 0.0);
+    void addComboRow  (const juce::String& name, const juce::StringArray& items, int selected,
+                       std::function<void (int)> onChange);
+    void addButtonRow (const juce::String& label, const juce::String& buttonText,
+                       std::function<void()> onClick);
+    void addReadonlyRow (const juce::String& name, const juce::String& value);
+};
+
+// ============================================================
+// SignalPathCanvas
+// Custom-drawn graph view with auto-layout.
+// ============================================================
+class SignalPathCanvas : public juce::Component
+{
+public:
+    SignalPathCanvas (RDProcessorMk01AudioProcessor& p,
+                      std::function<void (juce::Uuid)> onSelect,
+                      std::function<void (juce::Uuid)> onRemove);
+
+    void paint   (juce::Graphics& g) override;
+    void resized ()                  override;
+    void mouseDown (const juce::MouseEvent& e) override;
+
+    void setSelectedBlock (juce::Uuid id) { selectedId = id; repaint(); }
+    void refresh          ()              { computeLayout(); repaint(); }
+
+private:
+    RDProcessorMk01AudioProcessor&     processor;
+    std::function<void (juce::Uuid)>   onBlockSelected;
+    std::function<void (juce::Uuid)>   onBlockRemoved;
+
+    juce::TextButton addBlockButton { "+ Add Block" };
+
+    struct NodeLayout { juce::Uuid id; juce::Rectangle<int> bounds; };
+    std::vector<NodeLayout> layouts;
+    juce::Uuid selectedId = juce::Uuid::null();
+
+    void computeLayout();
+    juce::Rectangle<int> findNodeBounds (juce::Uuid id) const;
+    juce::Uuid           hitTest        (juce::Point<int> pos) const;
+    void showAddBlockMenu();
+    void showNodeContextMenu (juce::Uuid id);
+
+    static constexpr int nodeW = 90;
+    static constexpr int nodeH = 44;
+};
+
+// ============================================================
+// Main editor
+// ============================================================
+class RDProcessorMk01AudioProcessorEditor : public juce::AudioProcessorEditor,
+                                             public juce::Timer
+{
+public:
+    explicit RDProcessorMk01AudioProcessorEditor (RDProcessorMk01AudioProcessor& p);
+    ~RDProcessorMk01AudioProcessorEditor() override;
+
+    void paint   (juce::Graphics& g) override;
+    void resized ()                  override;
+    void timerCallback()             override;
+
 private:
     RDProcessorMk01AudioProcessor& audioProcessor;
-    MainCanvasComponent mainCanvas;
-    InspectorSidebar sidebar;
-    BlockPalette palette;
+
+    juce::TextButton saveButton { "Save Preset" };
+    juce::TextButton loadButton { "Load Preset" };
+    juce::Label      titleLabel;
+
+    InspectorSidebar  sidebar;
+    SignalPathCanvas  canvas;
+
+    std::unique_ptr<juce::FileChooser> fileChooser;
+
+    void onBlockSelected (juce::Uuid id);
+    void onBlockRemoved  (juce::Uuid id);
+
     JUCE_DECLARE_NON_COPYABLE_WITH_LEAK_DETECTOR (RDProcessorMk01AudioProcessorEditor)
 };

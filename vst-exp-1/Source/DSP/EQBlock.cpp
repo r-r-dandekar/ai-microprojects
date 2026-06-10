@@ -1,19 +1,54 @@
-#include "EQBlock.h"
+#include "DSP/EQBlock.h"
 
-EQBlock::EQBlock() {}
-
-void EQBlock::prepareToPlay(double sr, int samplesPerBlock)
+EQBlock::EQBlock()
 {
-    juce::dsp::ProcessSpec spec { sr, (juce::uint32)samplesPerBlock, 2 };
-    filterChain.prepare(spec);
-    *filterChain.get<0>().coefficients = *juce::dsp::IIR::Coefficients<float>::makeHighPass(sr, 100.0f);
+    updateCoefficients();
 }
 
-void EQBlock::releaseResources() {}
-
-void EQBlock::processBlock(juce::AudioBuffer<float>& input, juce::AudioBuffer<float>& output)
+void EQBlock::prepareToPlay (double sr, int)
 {
-    output.makeCopyOf(input);
-    juce::dsp::AudioBlock<float> block(output);
-    filterChain.process(juce::dsp::ProcessContextReplacing<float>(block));
+    sampleRate = sr;
+    for (auto& f : filters) f.reset();
+    updateCoefficients();
+}
+
+void EQBlock::releaseResources()
+{
+    for (auto& f : filters) f.reset();
+}
+
+void EQBlock::setFrequency  (float hz) { frequency  = hz; updateCoefficients(); }
+void EQBlock::setGainDb     (float db) { gainDb     = db; updateCoefficients(); }
+void EQBlock::setQ          (float q)  { qValue     = q;  updateCoefficients(); }
+void EQBlock::setFilterType (EQFilterType t) { filterType = t; updateCoefficients(); }
+
+void EQBlock::updateCoefficients()
+{
+    float linearGain = juce::Decibels::decibelsToGain (gainDb);
+    FilterCoeffs::Ptr coeffs;
+
+    switch (filterType)
+    {
+        case EQFilterType::LowShelf:
+            coeffs = FilterCoeffs::makeLowShelf  (sampleRate, frequency, qValue, linearGain); break;
+        case EQFilterType::HighShelf:
+            coeffs = FilterCoeffs::makeHighShelf (sampleRate, frequency, qValue, linearGain); break;
+        case EQFilterType::BandShelf:
+            coeffs = FilterCoeffs::makePeakFilter(sampleRate, frequency, qValue, linearGain); break;
+    }
+
+    for (auto& f : filters)
+        f.coefficients = coeffs;
+}
+
+void EQBlock::processBlock (juce::AudioBuffer<float>& input, juce::AudioBuffer<float>& output)
+{
+    output.makeCopyOf (input);
+    for (int ch = 0; ch < output.getNumChannels(); ++ch)
+    {
+        auto& f    = filters[ch < 2 ? ch : 1];
+        float* data = output.getWritePointer (ch);
+        for (int s = 0; s < output.getNumSamples(); ++s)
+            data[s] = f.processSample (data[s]);
+    }
 }

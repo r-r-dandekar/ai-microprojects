@@ -1,17 +1,13 @@
 #pragma once
-
 #include <juce_core/juce_core.h>
 
-/**
- * Represents a connection between two AudioBlocks.
- */
 struct Connection
 {
     juce::Uuid sourceId;
     juce::Uuid destinationId;
 
-    bool operator==(const Connection& other) const
+    bool operator== (const Connection& o) const noexcept
     {
-        return sourceId == other.sourceId && destinationId == other.destinationId;
+        return sourceId == o.sourceId && destinationId == o.destinationId;
     }
 };

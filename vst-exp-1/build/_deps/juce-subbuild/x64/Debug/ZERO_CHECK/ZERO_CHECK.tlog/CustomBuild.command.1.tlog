@@ -1,0 +1,10 @@
+^C:\USERS\RVDAN\DOCUMENTS\AI-MICROPROJECTS\VST-EXP-1\BUILD\_DEPS\JUCE-SUBBUILD\CMAKEFILES\3E4DEF0F7BEA7CA2A57BB6CE9E535A41\GENERATE.STAMP.RULE
+setlocal
+"C:\Program Files\CMake\bin\cmake.exe" -SC:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild -BC:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild --check-stamp-list CMakeFiles/generate.stamp.list --vs-solution-file C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/juce-populate.slnx
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd

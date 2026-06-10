@@ -1,0 +1,46 @@
+{
+	"sources" : 
+	[
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/juce-populate"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/3e4def0f7bea7ca2a57bb6ce9e535a41/juce-populate.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/5aa7931c2fdc8aa8f6e811be1cf66832/juce-populate-complete.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-build.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-configure.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-download.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-install.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-mkdir.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-patch.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-test.rule"
+		},
+		{
+			"file" : "C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-subbuild/CMakeFiles/b59bcda1172d21eaf60c0800d1363f27/juce-populate-update.rule"
+		}
+	],
+	"target" : 
+	{
+		"labels" : 
+		[
+			"juce-populate"
+		],
+		"name" : "juce-populate"
+	}
+}

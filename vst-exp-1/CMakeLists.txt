@@ -37,18 +37,27 @@ target_sources(RD-Processor-Mk-01 PRIVATE
     Source/PluginProcessor.h
     Source/PluginEditor.cpp
     Source/PluginEditor.h
+
     Source/Model/AudioBlock.h
     Source/Model/AudioBlock.cpp
     Source/Model/AudioGraph.h
     Source/Model/AudioGraph.cpp
     Source/Model/Connection.h
+
+    Source/DSP/SourceBlock.h
+    Source/DSP/OutputBlock.h
+    Source/DSP/SplitBlock.h
+    Source/DSP/MergeBlock.h
+    Source/DSP/MergeBlock.cpp
     Source/DSP/DistortionBlock.h
     Source/DSP/DistortionBlock.cpp
     Source/DSP/EQBlock.h
     Source/DSP/EQBlock.cpp
     Source/DSP/CompressorBlock.h
     Source/DSP/CompressorBlock.cpp
+    Source/DSP/DecompressorBlock.h
     Source/DSP/DecompressorBlock.cpp
+    Source/DSP/IRBlock.h
     Source/DSP/IRBlock.cpp
 )
 

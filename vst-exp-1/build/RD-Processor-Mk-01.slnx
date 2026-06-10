@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Solution>
+	<Configurations>
+		<BuildType Name="Debug"/>
+		<BuildType Name="Release"/>
+		<BuildType Name="MinSizeRel"/>
+		<BuildType Name="RelWithDebInfo"/>
+		<Platform Name="x64"/>
+	</Configurations>
+	<Project Path="RD-Processor-Mk-01_rc_lib.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="adb5d992-1c0e-3bf8-9b0f-838c3be359e3">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Project Path="juce_vst3_helper.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ede33daf-8cc6-32af-9d39-88b419df0769">
+		<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+	</Project>
+	<Folder Name="/CMakePredefinedTargets/">
+		<Project Path="ALL_BUILD.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="75c07ab6-5c0d-3b43-ab50-23abfbfc5fc0" DefaultStartup="true">
+			<BuildDependency Project="RD-Processor-Mk-01.vcxproj"/>
+			<BuildDependency Project="RD-Processor-Mk-01_Standalone.vcxproj"/>
+			<BuildDependency Project="RD-Processor-Mk-01_VST3.vcxproj"/>
+			<BuildDependency Project="RD-Processor-Mk-01_rc_lib.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<BuildDependency Project="juce_vst3_helper.vcxproj"/>
+		</Project>
+		<Project Path="INSTALL.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="5892eaaf-7c57-39e6-be3c-8c863c25c527">
+			<BuildDependency Project="ALL_BUILD.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+		<Project Path="ZERO_CHECK.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="e1078ab3-48e6-30b3-92e2-d72d67a5abc8"/>
+	</Folder>
+	<Folder Name="/RD-Processor-Mk-01/">
+		<Project Path="RD-Processor-Mk-01.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="95229d30-3b67-36fd-9a1e-c67e2233b923">
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		</Project>
+		<Project Path="RD-Processor-Mk-01_All.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="efc552b1-931b-3554-9967-2c198ef1e4d0">
+			<BuildDependency Project="RD-Processor-Mk-01_Standalone.vcxproj"/>
+			<BuildDependency Project="RD-Processor-Mk-01_VST3.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<Build Solution="Debug|*" Project="false"/>
+			<Build Solution="Release|*" Project="false"/>
+			<Build Solution="MinSizeRel|*" Project="false"/>
+			<Build Solution="RelWithDebInfo|*" Project="false"/>
+		</Project>
+		<Project Path="RD-Processor-Mk-01_Standalone.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="ac8ecb39-854f-3a3b-8036-63fd9a56359c">
+			<BuildDependency Project="RD-Processor-Mk-01.vcxproj"/>
+			<BuildDependency Project="RD-Processor-Mk-01_rc_lib.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+		</Project>
+		<Project Path="RD-Processor-Mk-01_VST3.vcxproj" Type="8bc9ceb8-8b4a-11d0-8d11-00a0c91bc942" Id="b920d48c-7eb6-37ac-b50d-3ede780f44e6">
+			<BuildDependency Project="RD-Processor-Mk-01.vcxproj"/>
+			<BuildDependency Project="RD-Processor-Mk-01_rc_lib.vcxproj"/>
+			<BuildDependency Project="ZERO_CHECK.vcxproj"/>
+			<BuildDependency Project="juce_vst3_helper.vcxproj"/>
+		</Project>
+	</Folder>
+</Solution>

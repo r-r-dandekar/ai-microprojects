@@ -1,0 +1,13 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-build\tools\CMakeFiles\7a2a0f021f93f3eafa8e0874689aa2ac\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{3B754062-5748-31BB-85AD-2489DEC0734D}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

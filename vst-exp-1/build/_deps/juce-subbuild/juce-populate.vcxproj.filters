@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-mkdir.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-download.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-update.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-patch.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-configure.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-build.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-install.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\b59bcda1172d21eaf60c0800d1363f27\juce-populate-test.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\5aa7931c2fdc8aa8f6e811be1cf66832\juce-populate-complete.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\3e4def0f7bea7ca2a57bb6ce9e535a41\juce-populate.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\_deps\juce-subbuild\CMakeFiles\juce-populate" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{47B064BF-1364-32F4-B8AD-C25AAAA88C82}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>

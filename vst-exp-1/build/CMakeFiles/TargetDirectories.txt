@@ -1,0 +1,14 @@
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/RD-Processor-Mk-01.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/RD-Processor-Mk-01_All.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/RD-Processor-Mk-01_Standalone.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/RD-Processor-Mk-01_rc_lib.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/RD-Processor-Mk-01_VST3.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/juce_vst3_helper.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/INSTALL.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/ALL_BUILD.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/CMakeFiles/ZERO_CHECK.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-build/CMakeFiles/INSTALL.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-build/CMakeFiles/ALL_BUILD.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-build/modules/CMakeFiles/INSTALL.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-build/extras/Build/CMakeFiles/INSTALL.dir
+C:/Users/rvdan/Documents/ai-microprojects/vst-exp-1/build/_deps/juce-build/extras/Build/juceaide/CMakeFiles/INSTALL.dir

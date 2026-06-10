@@ -1,0 +1,22 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="18.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\CMakeFiles\19be7e5c6535387b1cdd37417441dc69\RD-Processor-Mk-01_resources.rc.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+    <CustomBuild Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\CMakeLists.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <ResourceCompile Include="C:\Users\rvdan\Documents\ai-microprojects\vst-exp-1\build\RD-Processor-Mk-01_artefacts\JuceLibraryCode\RD-Processor-Mk-01_resources.rc">
+      <Filter>Source Files</Filter>
+    </ResourceCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{549957A5-CAED-33B9-AEA1-7641A8D84B8E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{840F9275-0368-3AD1-B0BF-B39D5CF7216F}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
