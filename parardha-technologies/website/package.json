@@ -1,0 +1,12 @@
+{
+  "name": "parardha-technologies-website",
+  "type": "module",
+  "scripts": {
+    "build-config": "node scripts/generate-config.js",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "devDependencies": {
+    "vitest": "^2.0.0"
+  }
+}
