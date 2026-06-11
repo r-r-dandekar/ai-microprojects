@@ -46,7 +46,7 @@ const sectionObserver = new IntersectionObserver((entries) => {
       });
     }
   });
-}, { rootMargin: `-${68}px 0px -60% 0px` });
+}, { rootMargin: `-66px 0px -60% 0px` });
 
 sections.forEach(s => sectionObserver.observe(s));
 

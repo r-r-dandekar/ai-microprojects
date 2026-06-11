@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="220" viewBox="0 0 720 220">
+  <defs>
+    
+  </defs>
+  
+  <rect x="60" y="60" width="100" height="100" rx="14" fill="#FF9966"></rect>
+  <text x="110" y="126" font-family="&#39;DM Sans&#39;, Helvetica, Arial, sans-serif" font-weight="700" font-size="52" fill="#ffffff" text-anchor="middle">P</text>
+  
+  <text x="192" y="116" font-family="&#39;DM Sans&#39;, Helvetica, Arial, sans-serif" font-weight="600" font-size="45" fill="#FF9966" letter-spacing="-0.5">Parardha Technologies</text>
+  
+  <text x="192" y="156" font-family="&#39;DM Sans&#39;, Helvetica, Arial, sans-serif" font-weight="400" font-size="14" fill="#888888" letter-spacing="2.5">SCALE INFINITELY, WIN STRATEGICALLY...</text>
+</svg>

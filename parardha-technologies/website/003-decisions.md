@@ -10,21 +10,26 @@
 
 ## Structure
 - Single-page website with scroll-based navigation
-- Sections: Home / What We Do / Work With Us / Contact
+- Sections: Home / How We Help / Work With Us / Contact
+- (Revised 2026-06-11 after client feedback — see notes per section)
 
 ## Sections
 
 ### Hero
-- Tagline + subheading + single CTA button ("Get in Touch")
+- Logo image (contains the small tagline beneath the name) + short, plain intro
+  paragraph focused on the client + single CTA button ("Get in touch")
+- No giant tagline title — that read as pretentious
 
-### What We Do
-- 6 items: icon + title + one-line description
+### How We Help (was "What We Do")
+- 6 cards, each framed as a client question (e.g. "Where does AI actually fit?")
+  with a plain-language answer
+- No emoji icons (read as flashy); no "selling who we are" subtitle
 - Based on the 6 service points in 001-intent.md
 
 ### Work With Us (Pricing)
-- Three cards: Hourly, Retainer, Project-Based
+- Three cards: by the hour / on retainer / by the project
 - No prices listed — describe each model and who it suits
-- Each card directs to the contact form
+- A single "Get in touch" button sits below the three cards (not one per card)
 
 ### Contact
 - Form fields: Name, Email, Message, Submit
